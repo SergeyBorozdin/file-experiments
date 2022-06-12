@@ -1,25 +1,21 @@
-import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 public class Main {
 
     public static void main(String[] args)
     {
-        String path = "C:\\Users\\60034452\\Desktop\\test.txt";
+        String path = "C:\\Users\\60034452\\Desktop\\output.txt";
         try
         {
+            FileOutputStream outputStream = new FileOutputStream(path);
             StringBuilder stringBuilder = new StringBuilder();
-            FileInputStream inputStream = new FileInputStream(path);
-            while (true)
+            for (int i = 0; i < 100; i++)
             {
-                int code = inputStream.read();
-                if (code < 0){
-                    break;
-                }
-                stringBuilder.append((char) code);
+                stringBuilder.append(i + "\n");
             }
-            inputStream.close();
-            System.out.println(stringBuilder);
-
+            outputStream.write(stringBuilder.toString().getBytes());
+            outputStream.flush();
+            outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
