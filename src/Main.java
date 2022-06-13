@@ -1,6 +1,6 @@
-import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 public class Main {
 
@@ -9,8 +9,8 @@ public class Main {
         String path = "C:\\Users\\60034452\\Desktop\\output.txt";
         try
         {
-            String data = Files.readString(Paths.get(path));
-            System.out.println(data);
+            //Files.writeString(Paths.get(path), "запишет этот текст\n", StandardOpenOption.APPEND); //допишет в файл
+            Files.writeString(Paths.get(path), "запишет этот текст\n", StandardOpenOption.CREATE); //создаст и запишет
         } catch (Exception e) {
             e.printStackTrace();
         }
