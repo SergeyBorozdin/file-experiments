@@ -1,4 +1,6 @@
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Main {
 
@@ -7,15 +9,8 @@ public class Main {
         String path = "C:\\Users\\60034452\\Desktop\\output.txt";
         try
         {
-            FileOutputStream outputStream = new FileOutputStream(path);
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < 100; i++)
-            {
-                stringBuilder.append(i + "\n");
-            }
-            outputStream.write(stringBuilder.toString().getBytes());
-            outputStream.flush();
-            outputStream.close();
+            String data = Files.readString(Paths.get(path));
+            System.out.println(data);
         } catch (Exception e) {
             e.printStackTrace();
         }
