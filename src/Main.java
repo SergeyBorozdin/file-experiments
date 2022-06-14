@@ -11,29 +11,40 @@ public class Main {
     public static void main(String[] args)
     {
         String path = "C:\\Users\\60034452\\Desktop\\";
-        String[] in = {"picture.jpeg", "output.txt", "test.txt"}; // кладем файлы в массив
+        String in = path + "folder";
         String out = path + "archive.zip";
 
         try // Обязательно в трай катч т.к. ошибки в пути возможны
         {
             FileOutputStream outputStream = new FileOutputStream(out);// создаем и передаем путь куда сохранять
             ZipOutputStream zipOut = new ZipOutputStream(outputStream);//
-            for (String fileName : in) // ходим по массиву
-            {
-                File file = new File(path + fileName); // создем обьект класса File передаем ему путь
-                ZipEntry entry = new ZipEntry(file.getName()); // специальная запись архива, которая содержит в себе имя файла
-                zipOut.putNextEntry(entry);// кладем в него entry - говорит что начнутся данные вот с таким именем
-                //  дальше можем читать строками или байтами(будем читать в байтовом массиве)
-                Path filePath = Paths.get(file.getAbsolutePath());
-                byte[] data = Files.readAllBytes(filePath); // читаем в байтах наш файл
-                zipOut.write(data); // после пишем в архив
-            }
-            zipOut.flush(); // после выгружаем из буфера
-            zipOut.close(); // после закрываем
-            outputStream.close(); // после закрываем
+            writeFileToZip(new File(in), zipOut, "");
+            zipOut.flush();
+            zipOut.close();
+            outputStream.close();
         }
         catch (Exception exception){
             exception.printStackTrace();
         }
+    }
+
+    public static void writeFileToZip(File file, ZipOutputStream zipOut, String path) throws Exception
+    {
+        if (file.isDirectory())
+        {
+            String folder = path + file.getName() + "/";
+            ZipEntry entry = new ZipEntry(folder);
+            zipOut.putNextEntry(entry);
+            zipOut.closeEntry();
+            File[] files = file.listFiles();
+            for (File subFile : files){
+                writeFileToZip(subFile, zipOut, folder);
+            }
+            return;
+        }
+        ZipEntry entry = new ZipEntry(path + file.getName());
+        zipOut.putNextEntry(entry);
+        byte[] bytes = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
+        zipOut.write(bytes);
     }
 }
