@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -42,14 +43,8 @@ public class Main {
                 }
                 else
                 {
-                    FileOutputStream outputStream = new FileOutputStream(file);
-                    byte[] buffer = new byte[1024];
-                    int lengthFile;
-                    while ((lengthFile = zipInput.read(buffer)) > 0){
-                        outputStream.write(buffer, 0, lengthFile);
-                    }
-                    outputStream.flush();
-                    outputStream.close();
+                    byte[] bytes = zipInput.readAllBytes();
+                    Files.write(Paths.get(file.getAbsolutePath()), bytes, StandardOpenOption.CREATE);
                 }
             }
 
